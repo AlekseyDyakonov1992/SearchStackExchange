@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Question</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <link rel="stylesheet" href="bower_components/ngToast/dist/ngToast.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-toast/2.0.0/ngToast-animations.css">
+    <link rel="stylesheet" href="css/mine.css">
+
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script type="text/javascript" src="bower_components/ngToast/dist/ngToast.js"></script>
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+</head>
+<body ng-app="AppStackExchange">
+
+<toast></toast>
+
+<div class="container-fluid" style="margin-top: 30px" ng-controller="AppCtrl">
+    <div class="row" style="margin-bottom: 30px">
+        <div class="col-lg-12">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" ng-click="onSearchClick(search)">Search</button>
+                </span>
+                <input type="text" class="form-control" placeholder="question"
+                       ng-model="search.title">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Questions</div>
+
+                <div class="table-responsive">
+
+                    <table ng-table="questionTable" class="table table-bordered" show-filter="true">
+
+                        <tr ng-repeat="item in $data"
+                            ng-class="{'answeredClass': item.is_answered, 'unAnsweredClass': !item.is_answered}">
+
+                            <td title="'Creation Date'"
+                                sortable="'creation_date'">
+                                {{item.creation_date | date : "dd.MM.y"}}
+                            </td>
+
+                            <td title="'Title'" filter="{ title: 'text'}" sortable="'title'">
+                                <span class="text-muted">{{item.title}}</span>
+                                <a ng-href="{{item.link}}" target="_blank" class="text-muted" title="Go to">
+                                    <span class="glyphicon glyphicon-open" title="Question"></span>
+                                </a>
+                            </td>
+
+                            <td title="'Owner name'" filter="{ owner: 'ownername'}" sortable="'owner'">
+                                <span class="text-muted">{{item.owner.display_name}}</span>
+                                <a ng-href="{{item.owner.link}}" target="_blank" class="text-muted" title="Go to">
+                                    <span class="glyphicon glyphicon-open" title="owner name"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="ng-table/filters/ownername.html">
+    <input type="text" name="filter-ownername" ng-model="params.filter().owner.display_name"
+           class="input-filter form-control"/>
+</script>
+</body>
+</html>
